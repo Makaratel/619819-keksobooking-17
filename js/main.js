@@ -44,7 +44,7 @@ var renderOffers = function () {
 
     fragment.appendChild(offerElement);
   }
- pinList.appendChild(fragment);
+  pinList.appendChild(fragment);
 };
 
 getRandomOffers();
