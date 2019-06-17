@@ -73,7 +73,7 @@ pinMain.addEventListener('click', function () {
   renderOffers();
   map.classList.remove('map--faded');
   formNotice.classList.remove('ad-form--disabled');
-})
+});
 
 var getPinCoordinates = function () {
   var mapCoordinates = map.getBoundingClientRect();
@@ -82,10 +82,10 @@ var getPinCoordinates = function () {
   var pinTopOffset = pinCoordinates.top - mapCoordinates.top + PIN_HEIGHT;
   var pinOffsets = [pinLeftOffset, pinTopOffset];
   inputAddress.value = pinOffsets;
-}
+};
 
 pinMain.addEventListener('mouseup', function () {
   getPinCoordinates();
-})
+});
 
 inputAddress.value = '570, 375';
