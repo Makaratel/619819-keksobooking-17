@@ -2,13 +2,26 @@
 
 var OFFER_TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var PIN_WIDTH = 65;
+var PIN_HEIGHT = 87;
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
-var pinList = document.querySelector('.map__pins');
+var pinList = map.querySelector('.map__pins');
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 var offers = [];
+
+var formFilters = document.querySelector('.map__filters');
+var formNotice = document.querySelector('.ad-form');
+var inputSelects = formFilters.querySelectorAll('select');
+var filtersFieldsets = formFilters.querySelectorAll('fieldset');
+var noticeFieldsets = formNotice.querySelectorAll('fieldset');
+var pinMain = pinList.querySelector('.map__pin--main');
+var inputAddress = formNotice.querySelector('#address');
+
+var getChangeStateForms = function (tagsArray, state) {
+  for (var i = 0; i < tagsArray.length; i++) {
+    tagsArray[i].disabled = state;
+  }
+};
 
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -48,4 +61,31 @@ var renderOffers = function () {
 };
 
 getRandomOffers();
-renderOffers();
+getChangeStateForms(inputSelects, true);
+getChangeStateForms(filtersFieldsets, true);
+getChangeStateForms(noticeFieldsets, true);
+
+pinMain.addEventListener('click', function () {
+  getChangeStateForms(inputSelects, false);
+  getChangeStateForms(filtersFieldsets, false);
+  getChangeStateForms(noticeFieldsets, false);
+
+  renderOffers();
+  map.classList.remove('map--faded');
+  formNotice.classList.remove('ad-form--disabled');
+});
+
+var getPinCoordinates = function () {
+  var mapCoordinates = map.getBoundingClientRect();
+  var pinCoordinates = pinMain.getBoundingClientRect();
+  var pinLeftOffset = pinCoordinates.left - mapCoordinates.left + PIN_WIDTH / 2;
+  var pinTopOffset = pinCoordinates.top - mapCoordinates.top + PIN_HEIGHT;
+  var pinOffsets = [pinLeftOffset, pinTopOffset];
+  inputAddress.value = pinOffsets;
+};
+
+pinMain.addEventListener('mouseup', function () {
+  getPinCoordinates();
+});
+
+inputAddress.value = '570, 375';
