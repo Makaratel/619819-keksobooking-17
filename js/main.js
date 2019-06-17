@@ -115,13 +115,13 @@ inputPrice.addEventListener('input', function (evt) {
   target.required = true;
   target.type = 'number';
 
-  if (inputType.value == 'bungalo' && target.value < 0) {
+  if (inputType.value === 'bungalo' && target.value < 0) {
     target.setCustomValidity('Цена за ночь не может быть ниже 0');
-  } else if (inputType.value == 'flat' && target.value < 1000) {
+  } else if (inputType.value === 'flat' && target.value < 1000) {
     target.setCustomValidity('Цена за ночь не может быть ниже 1 000');
-  } else if (inputType.value == 'house' && target.value < 5000) {
+  } else if (inputType.value === 'house' && target.value < 5000) {
     target.setCustomValidity('Цена за ночь не может быть ниже 5 000');
-  } else if (inputType.value == 'palace' && target.value < 10000) {
+  } else if (inputType.value === 'palace' && target.value < 10000) {
     target.setCustomValidity('Цена за ночь не может быть ниже 10 000');
   } else if (target.value > 1000000) {
     target.setCustomValidity('Цена за ночь не может быть более 1 000 000');
@@ -133,11 +133,11 @@ inputPrice.addEventListener('input', function (evt) {
 inputType.addEventListener('input', function (evt) {
   var target = evt.target;
 
-  if (target.value == 'bungalo') {
+  if (target.value === 'bungalo') {
     inputPrice.placeholder = '0';
-  } else if (target.value == 'flat') {
+  } else if (target.value === 'flat') {
     inputPrice.placeholder = '1 000';
-  } else if (target.value == 'house') {
+  } else if (target.value === 'house') {
     inputPrice.placeholder = '5 000';
   } else {
     inputPrice.placeholder = '10 000';
