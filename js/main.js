@@ -3,6 +3,8 @@
 var OFFER_TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var PIN_WIDTH = 65;
 var PIN_HEIGHT = 87;
+var TOP_PIN_LIMIT = 130;
+var BOTTOM_PIN_LIMIT = 630;
 
 var map = document.querySelector('.map');
 var pinList = map.querySelector('.map__pins');
@@ -69,30 +71,75 @@ var renderOffers = function () {
 var getPinCoordinates = function () {
   var mapCoordinates = map.getBoundingClientRect();
   var pinCoordinates = pinMain.getBoundingClientRect();
-  var pinLeftOffset = pinCoordinates.left - mapCoordinates.left + PIN_WIDTH / 2;
+  var pinLeftOffset = Math.round(pinCoordinates.left - mapCoordinates.left + PIN_WIDTH / 2);
   var pinTopOffset = pinCoordinates.top - mapCoordinates.top + PIN_HEIGHT;
   var pinOffsets = [pinLeftOffset, pinTopOffset];
   inputAddress.value = pinOffsets;
+};
+
+var getMoveLimits = function (element, topCoordinate, leftCoordinate) {
+  if (topCoordinate < TOP_PIN_LIMIT) {
+    element.style.top = TOP_PIN_LIMIT + 'px';
+  } else if (topCoordinate > BOTTOM_PIN_LIMIT) {
+    element.style.top = BOTTOM_PIN_LIMIT + 'px';
+  } else {
+    element.style.top = topCoordinate + 'px';
+  }
+
+  if (leftCoordinate < 0) {
+    element.style.left = 0 + 'px';
+  } else if (leftCoordinate > map.getBoundingClientRect().width - PIN_WIDTH) {
+    element.style.left = map.getBoundingClientRect().width - PIN_WIDTH + 'px';
+  } else {
+    element.style.left = leftCoordinate + 'px';
+  }
+};
+
+var getDraggableElement = function (draggableElement) {
+  draggableElement.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    draggableElement.style.zIndex = '2';
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var topCoordinate = (draggableElement.offsetTop - shift.y);
+      var leftCoordinate = (draggableElement.offsetLeft - shift.x);
+      getMoveLimits(draggableElement, topCoordinate, leftCoordinate);
+      getPinCoordinates();
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 };
 
 getRandomOffers();
 getChangeStateForms(inputSelects, true);
 getChangeStateForms(filtersFieldsets, true);
 getChangeStateForms(noticeFieldsets, true);
-
-pinMain.addEventListener('click', function () {
-  getChangeStateForms(inputSelects, false);
-  getChangeStateForms(filtersFieldsets, false);
-  getChangeStateForms(noticeFieldsets, false);
-
-  renderOffers();
-  map.classList.remove('map--faded');
-  formNotice.classList.remove('ad-form--disabled');
-});
-
-pinMain.addEventListener('mouseup', function () {
-  getPinCoordinates();
-});
 
 inputAddress.value = '570, 375';
 inputAddress.disabled = true;
@@ -150,4 +197,27 @@ inputTimeIn.addEventListener('input', function () {
 
 inputTimeOut.addEventListener('input', function () {
   inputTimeIn.value = inputTimeOut.value;
+});
+
+getDraggableElement(pinMain);
+
+pinMain.addEventListener('mousedown', function () {
+  var omMouseMove = function () {
+    getChangeStateForms(inputSelects, false);
+    getChangeStateForms(filtersFieldsets, false);
+    getChangeStateForms(noticeFieldsets, false);
+
+    renderOffers();
+    map.classList.remove('map--faded');
+    formNotice.classList.remove('ad-form--disabled');
+  }
+
+  var onMouseUp = function () {
+    getPinCoordinates();
+    pinMain.removeEventListener('mousemove', omMouseMove);
+    pinMain.removeEventListener('mouseup', onMouseUp);
+  }
+
+  pinMain.addEventListener('mousemove', omMouseMove);
+  pinMain.addEventListener('mouseup', onMouseUp);
 });
