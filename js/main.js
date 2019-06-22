@@ -210,13 +210,13 @@ pinMain.addEventListener('mousedown', function () {
     renderOffers();
     map.classList.remove('map--faded');
     formNotice.classList.remove('ad-form--disabled');
-  }
+  };
 
   var onMouseUp = function () {
     getPinCoordinates();
     pinMain.removeEventListener('mousemove', omMouseMove);
     pinMain.removeEventListener('mouseup', onMouseUp);
-  }
+  };
 
   pinMain.addEventListener('mousemove', omMouseMove);
   pinMain.addEventListener('mouseup', onMouseUp);
