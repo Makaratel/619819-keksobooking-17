@@ -14,5 +14,5 @@
   window.util = {
     getRandomNumber: getRandomNumber,
     getChangeStateForms: getChangeStateForms
-  }
+  };
 })();

@@ -45,5 +45,5 @@
   window.data = {
     getRandomOffers: getRandomOffers,
     renderOffers: renderOffers
-  }
+  };
 })();
