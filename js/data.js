@@ -22,7 +22,7 @@
 
   var getData = function () {
     window.backend.load(renderOffers);
-  }
+  };
 
   window.data = {
     getData: getData
