@@ -104,8 +104,7 @@
 
     };
 
-    window.data.getRandomOffers();
-    window.data.renderOffers();
+    window.data.getData();
     pinMain.addEventListener('mousemove', onMouseMove);
     pinMain.addEventListener('mouseup', onMouseUp);
   }, {once: true});
