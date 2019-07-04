@@ -10,9 +10,9 @@
     var fragment = document.createDocumentFragment();
     var takeNumber = offers.length > 5 ? 5 : offers.length;
 
-    while(pinList.children.length > 2) {
-      pinList.removeChild(pinList.lastChild)
-    };
+    while (pinList.children.length > 2) {
+      pinList.removeChild(pinList.lastChild);
+    }
 
     for (var i = 0; i < takeNumber; i++) {
       var offerElement = pin.cloneNode(true);
@@ -36,15 +36,15 @@
 
 
   filterType.addEventListener('change', function () {
-    var sameOffers = arrayOffers.filter(function (it){
+    var sameOffers = arrayOffers.filter(function (it) {
       if (filterType.value === 'any') {
         return arrayOffers;
       } else {
         return it.offer.type === filterType.value;
       }
-    })
+    });
     renderOffers(sameOffers);
-  })
+  });
 
   window.data = {
     getData: getData
