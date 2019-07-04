@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/keksobooking/datas';
+  var URL = 'https://js.dump.academy/keksobooking/data';
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
   var errorHandler = function () {

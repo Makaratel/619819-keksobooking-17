@@ -104,7 +104,7 @@
 
     };
 
-    window.data.getData();
+    window.backend.load(window.data.getData);
     pinMain.addEventListener('mousemove', onMouseMove);
     pinMain.addEventListener('mouseup', onMouseUp);
   }, {once: true});
