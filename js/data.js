@@ -6,6 +6,12 @@
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var arrayOffers = [];
 
+  var getData = function (data) {
+    arrayOffers = data;
+    renderOffers(arrayOffers);
+    window.card.renderPopup(arrayOffers);
+  };
+
   var renderOffers = function (offers) {
     var fragment = document.createDocumentFragment();
     var takeNumber = offers.length > 5 ? 5 : offers.length;
@@ -26,14 +32,8 @@
     pinList.appendChild(fragment);
   };
 
-  var getData = function (data) {
-    arrayOffers = data;
-    renderOffers(arrayOffers);
-  };
-
   var filters = document.querySelector('.map__filters');
   var filterType = filters.querySelector('#housing-type');
-
 
   filterType.addEventListener('change', function () {
     var sameOffers = arrayOffers.filter(function (it) {
