@@ -18,7 +18,7 @@
       fragment.appendChild(featureElement);
     }
     features.appendChild(fragment);
-  }
+  };
 
   var renderPhotos = function (offers, photos) {
     var fragment = document.createDocumentFragment();
@@ -31,7 +31,7 @@
       fragment.appendChild(photoElement);
     }
     photos.appendChild(fragment);
-  }
+  };
 
   var renderPopup = function (offers) {
     var offerPopup = card.cloneNode(true);
