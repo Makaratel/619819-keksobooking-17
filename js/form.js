@@ -18,7 +18,7 @@
   var inputGuests = formNotice.querySelector('#capacity');
 
   var checkRoomsAndGuests = function (inputOne, inputTwo, checkAttribute) {
-    inputOne.addEventListener('input', function (evt) {
+    inputOne.addEventListener('input', function () {
       var errorMessage = 'Недопустимое количество ' + checkAttribute;
 
       if (inputRooms.value === '1' && inputGuests.value === '3') {
