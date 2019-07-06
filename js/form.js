@@ -57,15 +57,19 @@
 
   inputType.addEventListener('input', function (evt) {
     var target = evt.target;
-
-    if (target.value === 'bungalo') {
-      inputPrice.placeholder = '0';
-    } else if (target.value === 'flat') {
-      inputPrice.placeholder = '1 000';
-    } else if (target.value === 'house') {
-      inputPrice.placeholder = '5 000';
-    } else {
-      inputPrice.placeholder = '10 000';
+    switch (target.value) {
+      case 'bungalo':
+        inputPrice.placeholder = '0';
+        break;
+      case 'flat':
+        inputPrice.placeholder = '1 000';
+        break;
+      case 'house':
+        inputPrice.placeholder = '5 000';
+        break;
+      case 'palace':
+        inputPrice.placeholder = '10 000';
+        break;
     }
   });
 

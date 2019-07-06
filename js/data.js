@@ -9,7 +9,6 @@
   var getData = function (data) {
     arrayOffers = data;
     renderOffers(arrayOffers);
-    window.card.renderPopup(arrayOffers);
   };
 
   var renderOffers = function (offers) {
@@ -29,8 +28,13 @@
 
       fragment.appendChild(offerElement);
     }
+
     pinList.appendChild(fragment);
   };
+
+  pinList.addEventListener('click', function (evt) {
+    window.card.openPopup(arrayOffers, evt);
+  });
 
   var filters = document.querySelector('.map__filters');
   var filterType = filters.querySelector('#housing-type');
