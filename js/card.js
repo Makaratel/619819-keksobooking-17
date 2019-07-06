@@ -5,35 +5,43 @@
   var filterContainer = map.querySelector('.map__filters-container');
   var card = document.querySelector('#card').content.querySelector('.popup');
 
-  var renderFeatures = function (offers, features) {
+  var closePopup = function () {
+    var openPopup = map.querySelector('.popup');
+    if (openPopup) {
+      openPopup.parentNode.removeChild(openPopup);
+    }
+    document.removeEventListener('click', closePopup);
+  };
+
+  var renderFeatures = function (offerPin, features) {
     var fragment = document.createDocumentFragment();
     var feature = features.querySelector('.popup__feature');
     feature.classList.remove('popup__feature--wifi');
     features.innerHTML = '';
 
-    for (var i = 0; i < offers[0].offer.features.length; i++) {
+    for (var i = 0; i < offerPin.offer.features.length; i++) {
       var featureElement = feature.cloneNode(true);
-      var nameClass = 'popup__feature--' + offers[0].offer.features[i];
+      var nameClass = 'popup__feature--' + offerPin.offer.features[i];
       featureElement.classList.add(nameClass);
       fragment.appendChild(featureElement);
     }
     features.appendChild(fragment);
   };
 
-  var renderPhotos = function (offers, photos) {
+  var renderPhotos = function (offerPin, photos) {
     var fragment = document.createDocumentFragment();
     var photo = photos.querySelector('.popup__photo');
     photos.innerHTML = '';
 
-    for (var i = 0; i < offers[0].offer.photos.length; i++) {
+    for (var i = 0; i < offerPin.offer.photos.length; i++) {
       var photoElement = photo.cloneNode(true);
-      photoElement.src = offers[0].offer.photos[i];
+      photoElement.src = offerPin.offer.photos[i];
       fragment.appendChild(photoElement);
     }
     photos.appendChild(fragment);
   };
 
-  var renderPopup = function (offers) {
+  var renderPopup = function (offerPin) {
     var offerPopup = card.cloneNode(true);
     var offerAvatar = offerPopup.querySelector('.popup__avatar');
     var offerTitle = offerPopup.querySelector('.popup__title');
@@ -45,16 +53,17 @@
     var offerFeatures = offerPopup.querySelector('.popup__features');
     var offerDescription = offerPopup.querySelector('.popup__description');
     var offerPhotos = offerPopup.querySelector('.popup__photos');
+    var closeButton = offerPopup.querySelector('.popup__close');
 
-    offerAvatar.src = offers[0].author.avatar;
-    offerTitle.textContent = offers[0].offer.title;
-    offerAddress.textContent = offers[0].offer.addres;
-    offerPrice.textContent = offers[0].offer.price + '₽/ночь';
-    offerCapacity.textContent = offers[0].offer.rooms + ' комнаты для ' + offers[0].offer.guests + ' гостей.';
-    offerTime.textContent = 'Заезд после ' + offers[0].offer.checkin + ', выезд до ' + offers[0].offer.checkout + '.';
-    offerDescription.textContent = offers[0].offer.description;
+    offerAvatar.src = offerPin.author.avatar;
+    offerTitle.textContent = offerPin.offer.title;
+    offerAddress.textContent = offerPin.offer.addres;
+    offerPrice.textContent = offerPin.offer.price + '₽/ночь';
+    offerCapacity.textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
+    offerTime.textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout + '.';
+    offerDescription.textContent = offerPin.offer.description;
 
-    switch (offers[0].offer.type) {
+    switch (offerPin.offer.type) {
       case 'bungalo':
         offerType.textContent = 'Бунгало';
         break;
@@ -69,12 +78,32 @@
         break;
     }
 
-    renderFeatures(offers, offerFeatures);
-    renderPhotos(offers, offerPhotos);
+    renderFeatures(offerPin, offerFeatures);
+    renderPhotos(offerPin, offerPhotos);
     map.insertBefore(offerPopup, filterContainer);
+    window.util.closeSomething(closeButton, closePopup);
+  };
+
+  var openPopup = function (offers, evt) {
+    var target = evt.target;
+    var pinTitle;
+    closePopup();
+
+    if (target.tagName === 'IMG') {
+      pinTitle = target.alt;
+    } else if (target.tagName === 'BUTTON') {
+      pinTitle = target.children[0].alt;
+    }
+
+    for (var i = 0; i < offers.length; i++) {
+      if (pinTitle === offers[i].offer.title) {
+        renderPopup(offers[i]);
+      }
+    }
   };
 
   window.card = {
-    renderPopup: renderPopup
+    renderPopup: renderPopup,
+    openPopup: openPopup
   };
 })();
