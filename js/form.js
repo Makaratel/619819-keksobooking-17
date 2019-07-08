@@ -3,6 +3,9 @@
 (function () {
   var formFilters = document.querySelector('.map__filters');
   var formNotice = document.querySelector('.ad-form');
+  var map = document.querySelector('.map');
+  var pinList = map.querySelector('.map__pins');
+  var pinMain = pinList.querySelector('.map__pin--main');
 
   var inputSelects = formFilters.querySelectorAll('select');
   var filtersFieldsets = formFilters.querySelectorAll('fieldset');
@@ -16,6 +19,48 @@
   var inputTimeOut = formNotice.querySelector('#timeout');
   var inputRooms = formNotice.querySelector('#room_number');
   var inputGuests = formNotice.querySelector('#capacity');
+  var inputDescription = formNotice.querySelector('#description');
+  var inputFeatures = formNotice.querySelectorAll('input[name=features]');
+  var reset = formNotice.querySelector('.ad-form__reset');
+
+  var changeStateForms = function (state) {
+    window.util.changeStateFields(inputSelects, state);
+    window.util.changeStateFields(filtersFieldsets, state);
+    window.util.changeStateFields(noticeFieldsets, state);
+  };
+
+  var clearForms = function () {
+    inputTitle.value = '';
+    inputPrice.value = '';
+    inputType.value = 'flat';
+    inputTimeIn.value = '12:00';
+    inputTimeOut.value = '12:00';
+    inputRooms.value = '1';
+    inputGuests.value = '3';
+    inputDescription.value = '';
+
+    for (var i = 0; i < inputFeatures.length; i++) {
+      inputFeatures[i].checked = false;
+    }
+  };
+
+  var resetMainPin = function () {
+    pinMain.style.left = 570 + 'px';
+    pinMain.style.top = 375 + 'px';
+    inputAddress.value = '570, 375';
+    inputAddress.readOnly = true;
+  };
+
+  var resetPage = function () {
+    changeStateForms(true);
+    window.util.removeChildren(pinList, 2);
+    window.card.closePopup();
+    resetMainPin();
+    clearForms();
+
+    formNotice.classList.add('ad-form--disabled');
+    map.classList.add('map--faded');
+  };
 
   var checkRoomsAndGuests = function (inputOne, inputTwo, checkAttribute) {
     inputOne.addEventListener('input', function () {
@@ -45,12 +90,8 @@
     });
   };
 
-  window.util.getChangeStateForms(inputSelects, true);
-  window.util.getChangeStateForms(filtersFieldsets, true);
-  window.util.getChangeStateForms(noticeFieldsets, true);
-
-  inputAddress.value = '570, 375';
-  inputAddress.disabled = true;
+  resetMainPin();
+  changeStateForms(true);
 
   checkRoomsAndGuests(inputRooms, inputGuests, 'комнат');
   checkRoomsAndGuests(inputGuests, inputRooms, 'мест');
@@ -111,5 +152,15 @@
     inputTimeIn.value = inputTimeOut.value;
   });
 
+  formNotice.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(formNotice), resetPage);
+  });
 
+  reset.addEventListener('click', resetPage);
+
+  window.form = {
+    changeStateForms: changeStateForms,
+    resetMainPin: resetMainPin
+  }
 })();

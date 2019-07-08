@@ -89,23 +89,23 @@
   getDraggableElement(pinMain);
 
   pinMain.addEventListener('mousedown', function () {
-    var onMouseMove = function () {
-      map.classList.remove('map--faded');
-      formNotice.classList.remove('ad-form--disabled');
+    var mapFaded = document.querySelector('.map--faded');
 
-      window.util.getChangeStateForms(inputSelects, false);
-      window.util.getChangeStateForms(filtersFieldsets, false);
-      window.util.getChangeStateForms(noticeFieldsets, false);
-    };
+    if (mapFaded) {
+      var onMouseMove = function () {
+        map.classList.remove('map--faded');
+        formNotice.classList.remove('ad-form--disabled');
+        window.form.changeStateForms(false);
+        window.backend.load(window.data.getData);
+      };
 
-    var onMouseUp = function () {
-      pinMain.removeEventListener('mousemove', onMouseMove);
-      pinMain.removeEventListener('mouseup', onMouseUp);
+      var onMouseUp = function () {
+        pinMain.removeEventListener('mousemove', onMouseMove);
+        pinMain.removeEventListener('mouseup', onMouseUp);
+      };
 
-    };
-
-    window.backend.load(window.data.getData);
-    pinMain.addEventListener('mousemove', onMouseMove);
-    pinMain.addEventListener('mouseup', onMouseUp);
-  }, {once: true});
+      pinMain.addEventListener('mousemove', onMouseMove, {once: true});
+      pinMain.addEventListener('mouseup', onMouseUp);
+    }
+  });
 })();
