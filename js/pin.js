@@ -9,8 +9,6 @@
   var map = document.querySelector('.map');
   var pinList = map.querySelector('.map__pins');
   var pinMain = pinList.querySelector('.map__pin--main');
-
-  var formFilters = document.querySelector('.map__filters');
   var formNotice = document.querySelector('.ad-form');
   var inputAddress = formNotice.querySelector('#address');
   var mapCoordinates = map.getBoundingClientRect();
