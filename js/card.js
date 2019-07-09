@@ -104,6 +104,7 @@
 
   window.card = {
     renderPopup: renderPopup,
-    openPopup: openPopup
+    openPopup: openPopup,
+    closePopup: closePopup
   };
 })();

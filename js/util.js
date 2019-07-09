@@ -20,7 +20,7 @@
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  var getChangeStateForms = function (tagsArray, disableState) {
+  var changeStateFields = function (tagsArray, disableState) {
     for (var i = 0; i < tagsArray.length; i++) {
       tagsArray[i].disabled = disableState;
     }
@@ -36,11 +36,18 @@
     });
   };
 
+  var removeChildren = function (list, lastNumberChildren) {
+    while (list.children.length > lastNumberChildren) {
+      list.removeChild(list.lastChild);
+    }
+  };
+
   window.util = {
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     closeSomething: closeSomething,
     getRandomNumber: getRandomNumber,
-    getChangeStateForms: getChangeStateForms
+    changeStateFields: changeStateFields,
+    removeChildren: removeChildren
   };
 })();
