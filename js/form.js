@@ -4,6 +4,10 @@
   var formFilters = document.querySelector('.map__filters');
   var formNotice = document.querySelector('.ad-form');
 
+  var map = document.querySelector('.map');
+  var pinList = map.querySelector('.map__pins');
+  var pinMain = pinList.querySelector('.map__pin--main');
+
   var inputSelects = formFilters.querySelectorAll('select');
   var filtersFieldsets = formFilters.querySelectorAll('fieldset');
   var noticeFieldsets = formNotice.querySelectorAll('fieldset');
