@@ -13,9 +13,6 @@
   var formFilters = document.querySelector('.map__filters');
   var formNotice = document.querySelector('.ad-form');
   var inputAddress = formNotice.querySelector('#address');
-  var inputSelects = formFilters.querySelectorAll('select');
-  var filtersFieldsets = formFilters.querySelectorAll('fieldset');
-  var noticeFieldsets = formNotice.querySelectorAll('fieldset');
   var mapCoordinates = map.getBoundingClientRect();
 
   var getPinCoordinates = function () {

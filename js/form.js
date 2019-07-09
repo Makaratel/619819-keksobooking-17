@@ -162,5 +162,5 @@
   window.form = {
     changeStateForms: changeStateForms,
     resetMainPin: resetMainPin
-  }
+  };
 })();
