@@ -14,10 +14,7 @@
   var renderOffers = function (offers) {
     var fragment = document.createDocumentFragment();
     var takeNumber = offers.length > 5 ? 5 : offers.length;
-
-    while (pinList.children.length > 2) {
-      pinList.removeChild(pinList.lastChild);
-    }
+    window.util.removeChildren(pinList, 2);
 
     for (var i = 0; i < takeNumber; i++) {
       var offerElement = pin.cloneNode(true);
@@ -28,7 +25,6 @@
 
       fragment.appendChild(offerElement);
     }
-
     pinList.appendChild(fragment);
   };
 
@@ -47,6 +43,7 @@
         return it.offer.type === filterType.value;
       }
     });
+    window.card.closePopup();
     renderOffers(sameOffers);
   });
 
