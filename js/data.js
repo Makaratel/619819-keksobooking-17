@@ -89,6 +89,7 @@
         return it.offer.guests === 0;
       }
     });
+    
     return sameOffers;
   };
 
