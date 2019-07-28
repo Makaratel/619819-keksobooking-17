@@ -42,12 +42,35 @@
     }
   };
 
+  var debounce = function (func, DEBOUNCE_INTERVAL, immediate) {
+    var timeout;
+
+    return function (args) {
+      args = arguments;
+
+      var onComplete = function () {
+        timeout = null;
+        if (!immediate) {
+          func.apply(func, args);
+        }
+      };
+
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(onComplete, DEBOUNCE_INTERVAL);
+      if (callNow) {
+        func.apply(func, args);
+      }
+    };
+  };
+
   window.util = {
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     closeSomething: closeSomething,
     getRandomNumber: getRandomNumber,
     changeStateFields: changeStateFields,
-    removeChildren: removeChildren
+    removeChildren: removeChildren,
+    debounce: debounce
   };
 })();
