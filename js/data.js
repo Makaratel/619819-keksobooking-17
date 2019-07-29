@@ -12,7 +12,6 @@
   var filterRooms = filters.querySelector('#housing-rooms');
   var filterGuests = filters.querySelector('#housing-guests');
   var filterFeaturesField = filters.querySelector('#housing-features');
-  var filterFeatures = filters.querySelectorAll('input[name=features]');
 
   var getData = function (data) {
     arrayOffers = data;
@@ -93,8 +92,7 @@
     return sameOffers;
   };
 
-  var getFilteredFeatures = function (evt) {
-    var target = evt.target;
+  var getFilteredFeatures = function () {
     var filterCheckboxes = map.querySelectorAll('.map__checkbox');
     var checkedFeatures = [];
 
@@ -106,8 +104,8 @@
 
     var sameOffers = arrayOffers.filter(function (it) {
       var comparedOffers = checkedFeatures.every(function (currentFeature) {
-          return it.offer.features.includes(currentFeature)
-      })
+        return it.offer.features.includes(currentFeature);
+      });
       return comparedOffers;
     });
     return sameOffers;
