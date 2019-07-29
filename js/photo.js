@@ -9,8 +9,6 @@
   var photoChooser = formNotice.querySelector('#images');
   var photoTemplate = formNotice.querySelector('.ad-form__photo');
   var photoContainer = formNotice.querySelector('.ad-form__photo-container');
-  var photoUpload = formNotice.querySelector('.ad-form__upload');
-  var photoFieldset = formNotice.querySelector('.ad-form__element--wide');
   var isFirstDowloandPhoto = true;
 
   var createPhoto = function (element, link) {
@@ -22,27 +20,25 @@
 
   var sortable = function (parentElement) {
     var dragableElement;
-    var nextElement;
 
     var onDragOver = function (evt) {
       var target = evt.target;
       evt.preventDefault();
       evt.dataTransfer.dropEffect = 'move';
 
-      if (target && target !== dragableElement && target.parentNode == photoContainer) {
+      if (target && target !== dragableElement && target.parentNode === photoContainer) {
         target.parentNode.insertBefore(dragableElement, target.nextSibling || target || target.previousSibling);
       }
-    }
+    };
 
     var onDragEnd = function (evt) {
       evt.preventDefault();
       parentElement.removeEventListener('dragover', onDragOver);
       parentElement.removeEventListener('dragend', onDragEnd);
-    }
+    };
 
     parentElement.addEventListener('dragstart', function (evt) {
       dragableElement = evt.target;
-      nextElement = dragableElement.nextSibling;
 
       // Ограничиваем тип перетаскивания
       evt.dataTransfer.effectAllowed = 'move';
