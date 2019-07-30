@@ -1,106 +1,70 @@
 'use strict';
 
 (function () {
-  var PIN_WIDTH = 65;
-  var PIN_HEIGHT = 87;
-  var TOP_PIN_LIMIT = 130;
-  var BOTTOM_PIN_LIMIT = 630;
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
 
-  var map = document.querySelector('.map');
-  var pinList = map.querySelector('.map__pins');
-  var pinMain = pinList.querySelector('.map__pin--main');
-  var formNotice = document.querySelector('.ad-form');
-  var inputAddress = formNotice.querySelector('#address');
-  var mapCoordinates = map.getBoundingClientRect();
-
-  var getPinCoordinates = function () {
-    var pinCoordinates = pinMain.getBoundingClientRect();
-    var pinLeftOffset = Math.round(pinCoordinates.left - mapCoordinates.left + PIN_WIDTH / 2);
-    var pinTopOffset = pinCoordinates.top - mapCoordinates.top + PIN_HEIGHT;
-    var pinOffsets = [pinLeftOffset, pinTopOffset];
-    inputAddress.value = pinOffsets;
-  };
-
-  var getMoveLimits = function (element, topCoordinate, leftCoordinate) {
-    if (topCoordinate < TOP_PIN_LIMIT) {
-      element.style.top = TOP_PIN_LIMIT + 'px';
-    } else if (topCoordinate > BOTTOM_PIN_LIMIT) {
-      element.style.top = BOTTOM_PIN_LIMIT + 'px';
-    } else {
-      element.style.top = topCoordinate + 'px';
-    }
-
-    if (leftCoordinate < 0) {
-      element.style.left = 0 + 'px';
-    } else if (leftCoordinate > mapCoordinates.width - PIN_WIDTH) {
-      element.style.left = mapCoordinates.width - PIN_WIDTH + 'px';
-    } else {
-      element.style.left = leftCoordinate + 'px';
+  var isEscEvent = function (evt, action) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      action();
     }
   };
 
-  var getDraggableElement = function (draggableElement) {
-    draggableElement.addEventListener('mousedown', function (evt) {
-      evt.preventDefault();
-      draggableElement.style.zIndex = '2';
+  var isEnterEvent = function (evt, action) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      action();
+    }
+  };
 
-      var startCoords = {
-        x: evt.clientX,
-        y: evt.clientY
-      };
+  var changeStateFields = function (tagsArray, disableState) {
+    for (var i = 0; i < tagsArray.length; i++) {
+      tagsArray[i].disabled = disableState;
+    }
+  };
 
-      var onMouseMove = function (moveEvt) {
-        moveEvt.preventDefault();
-
-        var shift = {
-          x: startCoords.x - moveEvt.clientX,
-          y: startCoords.y - moveEvt.clientY
-        };
-
-        startCoords = {
-          x: moveEvt.clientX,
-          y: moveEvt.clientY
-        };
-
-        var topCoordinate = (draggableElement.offsetTop - shift.y);
-        var leftCoordinate = (draggableElement.offsetLeft - shift.x);
-        getMoveLimits(draggableElement, topCoordinate, leftCoordinate);
-        getPinCoordinates();
-      };
-
-      var onMouseUp = function (upEvt) {
-        upEvt.preventDefault();
-        getPinCoordinates();
-
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      };
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+  var closeSomething = function (closeButton, closeAction) {
+    closeButton.addEventListener('click', closeAction);
+    closeButton.addEventListener('keydown', function (evt) {
+      isEnterEvent(evt, closeAction);
+    });
+    document.addEventListener('keydown', function (evt) {
+      isEscEvent(evt, closeAction);
     });
   };
 
-  getDraggableElement(pinMain);
-
-  pinMain.addEventListener('mousedown', function () {
-    var mapFaded = document.querySelector('.map--faded');
-
-    if (mapFaded) {
-      var onMouseMove = function () {
-        map.classList.remove('map--faded');
-        formNotice.classList.remove('ad-form--disabled');
-        window.form.changeStateForms(false);
-        window.backend.load(window.data.getData);
-      };
-
-      var onMouseUp = function () {
-        pinMain.removeEventListener('mousemove', onMouseMove);
-        pinMain.removeEventListener('mouseup', onMouseUp);
-      };
-
-      pinMain.addEventListener('mousemove', onMouseMove, {once: true});
-      pinMain.addEventListener('mouseup', onMouseUp);
+  var removeChildren = function (list, lastNumberChildren) {
+    while (list.children.length > lastNumberChildren) {
+      list.removeChild(list.lastChild);
     }
-  });
+  };
+
+  var debounce = function (func, DEBOUNCE_INTERVAL, immediate) {
+    var timeout;
+
+    return function (args) {
+      args = arguments;
+
+      var onComplete = function () {
+        timeout = null;
+        if (!immediate) {
+          func.apply(func, args);
+        }
+      };
+
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(onComplete, DEBOUNCE_INTERVAL);
+      if (callNow) {
+        func.apply(func, args);
+      }
+    };
+  };
+
+  window.util = {
+    isEscEvent: isEscEvent,
+    closeSomething: closeSomething,
+    changeStateFields: changeStateFields,
+    removeChildren: removeChildren,
+    debounce: debounce
+  };
 })();

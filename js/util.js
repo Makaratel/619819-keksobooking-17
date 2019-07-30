@@ -16,10 +16,6 @@
     }
   };
 
-  var getRandomNumber = function (min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  };
-
   var changeStateFields = function (tagsArray, disableState) {
     for (var i = 0; i < tagsArray.length; i++) {
       tagsArray[i].disabled = disableState;
@@ -66,9 +62,7 @@
 
   window.util = {
     isEscEvent: isEscEvent,
-    isEnterEvent: isEnterEvent,
     closeSomething: closeSomething,
-    getRandomNumber: getRandomNumber,
     changeStateFields: changeStateFields,
     removeChildren: removeChildren,
     debounce: debounce

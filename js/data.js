@@ -12,7 +12,6 @@
   var filterRooms = filters.querySelector('#housing-rooms');
   var filterGuests = filters.querySelector('#housing-guests');
   var filterFeaturesField = filters.querySelector('#housing-features');
-  var filterFeatures = filters.querySelectorAll('input[name=features]');
 
   var getData = function (data) {
     arrayOffers = data;
@@ -89,12 +88,11 @@
         return it.offer.guests === 0;
       }
     });
-    
+
     return sameOffers;
   };
 
-  var getFilteredFeatures = function (evt) {
-    var target = evt.target;
+  var getFilteredFeatures = function () {
     var filterCheckboxes = map.querySelectorAll('.map__checkbox');
     var checkedFeatures = [];
 
@@ -105,22 +103,29 @@
     }
 
     var sameOffers = arrayOffers.filter(function (it) {
-      var comparedOffers = checkedFeatures.every(function (currentFeature) {
-          return it.offer.features.includes(currentFeature)
-      })
-      return comparedOffers;
+      return checkedFeatures.every(function (currentFeature) {
+        return it.offer.features.includes(currentFeature);
+      });
     });
     return sameOffers;
   };
 
   var crossOffers = function (evt) {
-    var filteredOffers = arrayOffers.filter(it => getfilteredType().includes(it));
-    filteredOffers = filteredOffers.filter(it => getfilteredPrice().includes(it));
-    filteredOffers = filteredOffers.filter(it => getfilteredRooms().includes(it));
-    filteredOffers = filteredOffers.filter(it => getfilteredGuests().includes(it));
-    filteredOffers = filteredOffers.filter(it => getFilteredFeatures(evt).includes(it));
-    //console.log(getFilteredFeatures(evt));
-    console.log(filteredOffers);
+    var filteredOffers = arrayOffers.filter(function (it) {
+      return getfilteredType().includes(it);
+    });
+    filteredOffers = filteredOffers.filter(function (it) {
+      return getfilteredPrice().includes(it);
+    });
+    filteredOffers = filteredOffers.filter(function (it) {
+      return getfilteredRooms().includes(it);
+    });
+    filteredOffers = filteredOffers.filter(function (it) {
+      return getfilteredGuests().includes(it);
+    });
+    filteredOffers = filteredOffers.filter(function (it) {
+      return getFilteredFeatures(evt).includes(it);
+    });
     return filteredOffers;
   };
 
