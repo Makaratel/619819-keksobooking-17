@@ -82,6 +82,7 @@
         if (isFirstDownloadPhoto) {
           createPhoto(photoTemplate, reader.result);
           isFirstDownloadPhoto = false;
+
         } else {
           var photo = photoTemplate.cloneNode(true);
           createPhoto(photo, reader.result);
