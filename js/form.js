@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var RANGE_PRICE = [0, 1000, 5000, 10000];
+
   var formFilters = document.querySelector('.map__filters');
   var formNotice = document.querySelector('.ad-form');
   var map = document.querySelector('.map');
@@ -111,13 +113,13 @@
     inputPrice.required = true;
     inputPrice.type = 'number';
 
-    if (inputType.value === 'bungalo' && inputPrice.value < 0) {
+    if (inputType.value === 'bungalo' && inputPrice.value < RANGE_PRICE[0]) {
       inputPrice.setCustomValidity('Цена за ночь не может быть ниже 0');
-    } else if (inputType.value === 'flat' && inputPrice.value < 1000) {
+    } else if (inputType.value === 'flat' && inputPrice.value < RANGE_PRICE[1]) {
       inputPrice.setCustomValidity('Цена за ночь не может быть ниже 1 000');
-    } else if (inputType.value === 'house' && inputPrice.value < 5000) {
+    } else if (inputType.value === 'house' && inputPrice.value < RANGE_PRICE[20]) {
       inputPrice.setCustomValidity('Цена за ночь не может быть ниже 5 000');
-    } else if (inputType.value === 'palace' && inputPrice.value < 10000) {
+    } else if (inputType.value === 'palace' && inputPrice.value < RANGE_PRICE[3]) {
       inputPrice.setCustomValidity('Цена за ночь не может быть ниже 10 000');
     } else if (inputPrice.value > 1000000) {
       inputPrice.setCustomValidity('Цена за ночь не может быть более 1 000 000');
@@ -159,7 +161,6 @@
   reset.addEventListener('click', resetPage);
 
   window.form = {
-    changeStateForms: changeStateForms,
-    resetMainPin: resetMainPin
+    changeStateForms: changeStateForms
   };
 })();

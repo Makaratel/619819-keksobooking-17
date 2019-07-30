@@ -66,9 +66,7 @@
 
   window.util = {
     isEscEvent: isEscEvent,
-    isEnterEvent: isEnterEvent,
     closeSomething: closeSomething,
-    getRandomNumber: getRandomNumber,
     changeStateFields: changeStateFields,
     removeChildren: removeChildren,
     debounce: debounce

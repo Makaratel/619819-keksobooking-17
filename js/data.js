@@ -103,10 +103,9 @@
     }
 
     var sameOffers = arrayOffers.filter(function (it) {
-      var comparedOffers = checkedFeatures.every(function (currentFeature) {
+      return checkedFeatures.every(function (currentFeature) {
         return it.offer.features.includes(currentFeature);
       });
-      return comparedOffers;
     });
     return sameOffers;
   };

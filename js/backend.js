@@ -9,19 +9,19 @@
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
 
-  var responceHandler = function (template) {
-    var deleteResponceHandler = function () {
+  var createResponseHandler = function (template) {
+    var deleteResponseHandler = function () {
       document.body.children[0].remove();
     };
 
     var onEscPress = function (evt) {
-      window.util.isEscEvent(evt, deleteResponceHandler);
+      window.util.isEscEvent(evt, deleteResponseHandler);
       document.removeEventListener('click', onMousePress);
       document.removeEventListener('keydown', onEscPress);
     };
 
     var onMousePress = function () {
-      deleteResponceHandler();
+      deleteResponseHandler();
       document.removeEventListener('click', onMousePress);
       document.removeEventListener('keydown', onEscPress);
     };
@@ -42,16 +42,16 @@
       if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
       } else {
-        responceHandler(errorTemplate);
+        createResponseHandler(errorTemplate);
       }
     });
 
     xhr.addEventListener('error', function () {
-      responceHandler(errorTemplate);
+      createResponseHandler(errorTemplate);
     });
 
     xhr.addEventListener('timeout', function () {
-      responceHandler(errorTemplate);
+      createResponseHandler(errorTemplate);
     });
 
     xhr.timeout = TIMEOUT_RESPONCE;
@@ -65,18 +65,18 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === SUCCESS_STATUS) {
         onSave();
-        responceHandler(successTemplate);
+        createResponseHandler(successTemplate);
       } else {
-        responceHandler(errorTemplate);
+        createResponseHandler(errorTemplate);
       }
     });
 
     xhr.addEventListener('error', function () {
-      responceHandler(errorTemplate);
+      createResponseHandler(errorTemplate);
     });
 
     xhr.addEventListener('timeout', function () {
-      responceHandler(errorTemplate);
+      createResponseHandler(errorTemplate);
     });
 
     xhr.timeout = TIMEOUT_RESPONCE;

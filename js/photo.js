@@ -9,7 +9,7 @@
   var photoChooser = formNotice.querySelector('#images');
   var photoTemplate = formNotice.querySelector('.ad-form__photo');
   var photoContainer = formNotice.querySelector('.ad-form__photo-container');
-  var isFirstDowloandPhoto = true;
+  var isFirstDownloadPhoto = true;
 
   var createPhoto = function (element, link) {
     element.style.backgroundImage = 'url("' + link + '")';
@@ -79,9 +79,9 @@
       var reader = new FileReader();
 
       reader.addEventListener('load', function () {
-        if (isFirstDowloandPhoto) {
+        if (isFirstDownloadPhoto) {
           createPhoto(photoTemplate, reader.result);
-          isFirstDowloandPhoto = false;
+          isFirstDownloadPhoto = false;
         } else {
           var photo = photoTemplate.cloneNode(true);
           createPhoto(photo, reader.result);
